@@ -11,7 +11,7 @@ do
 
     # Perform the database backup. Put the output to a variable. If successful upload the backup to S3, if unsuccessful print an entry to the console and the log, and set has_failed to true.
     BKP_NAME="${CURRENT_DATABASE}_$(date +'%Y%m%d%H%M').sql.gz"
-    if sqloutput=$(mysqldump -u $TARGET_DATABASE_USER -h $TARGET_DATABASE_HOST -p$TARGET_DATABASE_PASSWORD -P $TARGET_DATABASE_PORT $CURRENT_DATABASE | gzip - 2>&1 > /tmp/$BKP_NAME)
+    if sqloutput=$(mysqldump --single-transaction -u $TARGET_DATABASE_USER -h $TARGET_DATABASE_HOST -p$TARGET_DATABASE_PASSWORD -P $TARGET_DATABASE_PORT $CURRENT_DATABASE | gzip - 2>&1 > /tmp/$BKP_NAME)
     then
         
         echo -e "Database backup successfully completed for $CURRENT_DATABASE at $(date +'%d-%m-%Y %H:%M:%S')."
